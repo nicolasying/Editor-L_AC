@@ -19,7 +19,11 @@ HEADERS  +=
 DISTFILES += \
     README.TXT \
     main.qml \
-    qtquickcontrols2.conf
+    qtquickcontrols2.conf \
+    icons/edit.svg \
+    icons/help.svg \
+    icons/settings.svg \
+    icons/welcome.svg
 
 RESOURCES += \
     qtquickstyle.qrc

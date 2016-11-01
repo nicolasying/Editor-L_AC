@@ -1,7 +1,7 @@
 import QtQuick 2.7
-import QtQuick.Controls 2.0
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
-import QtQuick.Controls.Material 2.0
 import QtQuick.LocalStorage 2.0
 import Qt.labs.folderlistmodel 2.1
 
@@ -13,213 +13,248 @@ ApplicationWindow {
     width: 1024
     height: 768
 
-    Material.theme: Material.Dark
-    Material.accent: Material.Teal
-    Material.primary: Material.BlueGrey
-
     title: qsTr("Editor for Language AC")
 
-    ButtonGroup { buttons: functionalityBar.children }
-
-    ToolBar {
-        id: functionalityBar
-        width: 60
-        height: parent.height
-        visible: true
-        transformOrigin: Item.TopLeft
-        anchors.left: parent.left
-        anchors.leftMargin: 0
-        anchors.top: parent.top
-        anchors.topMargin: 0
-        hoverEnabled: false
-
-        ToolButton {
-            id: welcomeButton
-            width: parent.width
-            x: 40
-            text: qsTr("Welcome")
-            transformOrigin: Item.TopLeft
-            highlighted: false
-            anchors.top: parent.top
-            anchors.topMargin: 20
-            autoExclusive: true
-            checkable: true
-            anchors.left: parent.left
-            anchors.leftMargin: 0
-            height: 30
+    menuBar: MenuBar {
+        Menu {
+            title: "File"
+            MenuItem {
+                text: "Open..."
+                shortcut: "Ctrl+O"
+            }
+            MenuSeparator {}
+            MenuItem {
+                text: "Close Current Tab"
+                shortcut: "Ctrl+W"
+            }
+            MenuItem {
+                text: "Close All Tabs"
+                shortcut: "Ctrl+Alt+W"
+            }
         }
 
-        ToolButton {
-            id: editorButton
-            width: parent.width
-            text: qsTr("Edit")
-            checkable: true
-            autoExclusive: true
-            transformOrigin: Item.TopLeft
-            anchors.left: parent.left
-            anchors.leftMargin: 0
-            anchors.top: welcomeButton.bottom
-            anchors.topMargin: 0
-            height: 30
-        }
-
-        ToolButton {
-            id: helpButton
-            width: parent.width
-            text: qsTr("Help")
-            autoExclusive: true
-            checkable: true
-            transformOrigin: Item.TopLeft
-            anchors.left: parent.left
-            anchors.leftMargin: 0
-            anchors.top: editorButton.bottom
-            anchors.topMargin: 0
-            height: 30
-        }
-
-
-        ToolButton {
-            id: settingsButton
-            width: parent.width
-            text: qsTr("Settings")
-            checkable: true
-            autoExclusive: true
-            transformOrigin: Item.TopLeft
-            anchors.left: parent.left
-            anchors.leftMargin: 0
-            anchors.top: helpButton.bottom
-            anchors.topMargin: 30
-            height: 30
-        }
-    }
-    TabBar {
-        id: fileTabs
-        anchors.top: parent.top
-        anchors.topMargin: 0
-        anchors.left: functionalityBar.right
-        anchors.leftMargin: 0
-        height: 40
-
-        TabButton {
-            id: tab1Button
-            width: 100
-            text: qsTr("File Var")
-            anchors.left: parent.left
-            anchors.leftMargin: 0
-        }
-        TabButton {
-            id: tab2Button
-            width: 40
-            text: qsTr("+")
-            anchors.left: tab1Button.right
-            anchors.leftMargin: 0
-        }
-    }
-
-    StackView {
-        id: fileViews
-        anchors.left: functionalityBar.right
-        anchors.leftMargin: 0
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 0
-        anchors.top: fileTabs.bottom
-        anchors.topMargin: 0
-        anchors.right: parent.right
-        anchors.rightMargin: 0
-        Item {
-            id: initialTab
-            anchors.fill: parent
-
-
-        }
-
-        Item {
-            id: firstTab
-            anchors.right: parent.right
-            anchors.rightMargin: 0
-            anchors.left: parent.left
-            anchors.leftMargin: 0
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 0
-            anchors.top: parent.top
-            anchors.topMargin: 0
-
-            Flickable {
-                id: codeContainer
-                contentWidth: parent.width
-                anchors.fill: parent
-                ScrollBar.vertical: ScrollBar {
-                    active: true
-                }
-                ScrollBar.horizontal: ScrollBar {
-                    active: false
-                }
-
-                TextArea.flickable: TextArea {
-                    wrapMode: TextArea.Wrap
-                    id: codeArea
-                    text: qsTr("Begin coding.")
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 0
-                    anchors.right: parent.right
-                    anchors.rightMargin: 0
-                    anchors.left: parent.left
-                    anchors.leftMargin: 0
-                    anchors.top: parent.top
-                    anchors.topMargin: 0
-                    leftPadding: 30
-                    topPadding: 30
-                    font.pointSize: 12
-                    font.family: "Menlo"
-                    selectByKeyboard: true
-                    selectByMouse: true
-                    selectionColor: Material.primary
-                    textFormat: "RichText"
-                    activeFocusOnPress: true
-                    activeFocusOnTab: true
-                    //textDocument.objectName:
-
-                }
+        Menu {
+            title: "Edit"
+            MenuItem {
+                text: "Cut"
+                shortcut: "Ctrl+X"
+            }
+            MenuItem {
+                text: "Copy"
+                shortcut: "Ctrl+C"
             }
 
+            MenuItem {
+                text: "Paste"
+                shortcut: "Ctrl+V"
+            }
         }
     }
 
-    footer : Row {
-        topPadding: 5
-        spacing: 5
+    ExclusiveGroup {
+        id: functionalityBarButtons
+    }
+
+    GridView {
+        id: mainWindow
+        anchors.bottom: statusBar.top
+        anchors.right: parent.right
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.bottomMargin: 0
+        Grid{
+            anchors.fill: parent
+            rows: 1
+            columns: 1
+            ToolBar {
+                id: functionalityBar
+                width: 60
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 0
+                visible: true
+                transformOrigin: Item.TopLeft
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+                anchors.top: parent.top
+                anchors.topMargin: 0
+
+                style: ToolBarStyle {
+                    background: Rectangle {
+                        color: "#37474F"
+                    }
+                }
+
+                FunctionalityButton {
+                    id: welcomeButton
+                    y: 30
+                    anchors.leftMargin: 0
+                    iconSVG: "icons/welcome.svg"
+                }
+                FunctionalityButton {
+                    id: editButton
+                    y: 90
+                    anchors.leftMargin: 0
+                    iconSVG: "icons/edit.svg"
+                    anchorstop: welcomeButton.bottom
+                }
+                FunctionalityButton {
+                    id: helpButton
+                    y: 210
+                    anchors.leftMargin: 0
+                    anchorstop: editButton.bottom
+                    iconSVG: "icons/help.svg"
+                }
+                FunctionalityButton {
+                    id: settingsButton
+                    y: 150
+                    anchors.leftMargin: 0
+                    anchorstop: helpButton.bottom
+                    iconSVG: "icons/settings.svg"
+                }
+
+            }
+
+            TabView {
+                id: fileTabs
+                anchors.right: parent.right
+                anchors.rightMargin: 0
+                anchors.top: parent.top
+                anchors.topMargin: 0
+                anchors.left: functionalityBar.right
+                anchors.leftMargin: 0
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 0
+                style: TabViewStyle {
+                    frameOverlap: 1
+                    tab: Rectangle {
+                        color: styleData.selected ? "#263238" :"#455A64"
+                        implicitWidth: Math.max(text.width + 4, 80)
+                        implicitHeight: 30
+                        Text {
+                            id: text
+                            anchors.centerIn: parent
+                            text: styleData.title
+                            color: styleData.selected ? "#ECEFF1" : "#CFD8DC"
+                        }
+                        Rectangle {
+                            visible: styleData.selected ? true : false
+                            color: "#B0BEC5"
+                            width: parent.width
+                            height: 2
+                            anchors.bottom: parent.bottom
+                            anchors.bottomMargin: 0
+                        }
+                    }
+                    frame: Rectangle { color: "#263238" }
+                }
+
+                Tab {
+                    id: tab1Button
+                    width: 100
+                    title: qsTr("File Var")
+                    anchors.left: parent.left
+                    anchors.leftMargin: 0
+                    anchors.fill: parent
+                    Item {
+                        id: firstTab
+                        anchors.right: parent.right
+                        anchors.rightMargin: 0
+                        anchors.left: parent.left
+                        anchors.leftMargin: 0
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 0
+                        anchors.top: parent.top
+                        anchors.topMargin: 0
+                        TextField {
+                            id: textEnum
+                            visible: false
+                            width: 30
+
+                            font.pointSize: 14
+                            font.family: "Menlo"
+                            anchors.bottom: parent.bottom
+                            anchors.bottomMargin: 0
+                            anchors.left: parent.left
+                            anchors.leftMargin: 0
+                            anchors.top: parent.top
+                            anchors.topMargin: 0
+                        }
+
+                        TextArea {
+                            id: codeArea
+                            text: qsTr("Begin coding.")
+                            anchors.bottom: parent.bottom
+                            anchors.bottomMargin: 0
+                            anchors.right: parent.right
+                            anchors.rightMargin: 0
+                            anchors.left: textEnum.right
+                            anchors.leftMargin: 0
+                            anchors.top: parent.top
+                            anchors.topMargin: 0
+                            textMargin: 0
+                            wrapMode: TextEdit.WrapAnywhere
+
+                            style: TextAreaStyle {
+                                backgroundColor: "#263238"
+                                selectionColor: "#78909C"
+                                textColor: "#FFFFFF"
+                                selectedTextColor: "#CFD8DC"
+                            }
+
+                            font.pointSize: 14
+                            font.family: "Menlo"
+                            selectByKeyboard: true
+                            selectByMouse: true
+
+                            activeFocusOnPress: true
+                            activeFocusOnTab: true
+                            //textDocument.objectName:
 
 
-        Button {
-            id: positionCounter
-            text: "#Line: "+ codeArea.lineCount + " Ln: " + codeArea.cursorPosition
-            font.pointSize: 12
-            checkable: false
-            flat: true
-            height: 20
-        }
-
-        Button {
-            id: languageIndicator
-            text: "Language AC"
-            font.pointSize: 12
-            checkable: false
-            flat: true
-            height: 20
-        }
-
-        Button {
-            id: fontSizer
-            text: "SIZE VARIABLE"
-            font.pointSize: 12
-            checkable: false
-            flat: true
-            height: 20
-        }
-        Rectangle {
-            color: "#526463"
-            width: parent.width
-            height: 20
+                        }
+                    }
+                }
+                Tab {
+                    title: "Any tab"
+                }
+            }
         }
     }
+
+    StatusBar {
+        id: statusBar
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 0
+        height: 20
+        RowLayout{
+            anchors.fill: parent
+            Label {
+                id: positionCounter
+                text: "#Line: "+ codeArea.lineCount + " Ln: " + codeArea.cursorPosition
+                font.pointSize: 12
+                //checkable: false
+                //flat: true
+                height: 20
+            }
+
+            Label {
+                id: languageIndicator
+                text: "Language AC"
+                font.pointSize: 12
+                //checkable: false
+                //flat: true
+                height: 20
+            }
+
+            Label {
+                id: fontSizer
+                text: "SIZE VARIABLE"
+                font.pointSize: 12
+                //checkable: false
+                //flat: true
+                height: 20
+            }
+        }
+    }
+
 }
