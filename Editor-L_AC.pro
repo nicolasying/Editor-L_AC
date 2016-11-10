@@ -12,9 +12,13 @@ TARGET = Editor-L_AC
 TEMPLATE = app
 
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    syntax.cpp \
+    documenthandler.cpp
 
-HEADERS  +=
+HEADERS  += \
+    syntax.h \
+    documenthandler.h
 
 DISTFILES += \
     README.TXT \
@@ -23,7 +27,9 @@ DISTFILES += \
     icons/edit.svg \
     icons/help.svg \
     icons/settings.svg \
-    icons/welcome.svg
+    icons/welcome.svg \
+    FunctionalityButton.qml \
+    CodeTab.qml
 
 RESOURCES += \
     qtquickstyle.qrc

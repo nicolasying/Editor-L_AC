@@ -8,10 +8,11 @@ Item {
     width:  parent.width
 
 
-    property var baseColor: "#FFFFFF"
+    property string baseColor: "#FFFFFF"
     property var id: functionalityBarButtons
-    property var iconSVG: "icons/settings.svg"
+    property string iconSVG: "icons/settings.svg"
     property var anchorstop: parent.top
+    property var buttonAction
 
     ToolButton {
         anchors.fill:parent
@@ -22,7 +23,7 @@ Item {
         anchors.leftMargin: 0
         anchors.topMargin: 0
         isDefault: false
-
+        action: buttonAction
         style: ButtonStyle {
             background: Rectangle {
                 id: background

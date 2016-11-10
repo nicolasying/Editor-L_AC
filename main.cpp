@@ -1,68 +1,47 @@
+#include "syntax.h"
+#include "documenthandler.h"
 #include <QApplication>
 #include <QWindow>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
-#include <QtQuickControls2>
 #include <QMenuBar>
-#include <QObject>
-#include <QString>
-#include <QMainWindow>
-#include <QQuickTextDocument>
 
-//class MainWindow : public QMainWindow {
-//    Q_OBJECT
-
-//public:
-//    MainWindow();
-
-//protected:
-//#ifndef QT_NO_CONTEXTMENU
-//    void contextMenuEvent(QContextMenuEvent * event) Q_DECL_OVERRIDE;
-//#endif //QT_NO_CONTEXTMENU
-
-//private:
-//    void createActions();
-//    void createMenus();
-//    QMenu *fileMenu;
-//    QAction *newAct;
-//private slots:
-//    void newFile();
-//};
-
-//MainWindow::MainWindow {
-//    QWidget * widget = new QWidget;
-//}
-
-//void MainWindow::createActions() {
-//    QAction * newAct = new QAction(QObject::tr("&New"));
-//    newAct->setShortcut(QKeySequence::New);
-//    newAct->setStatusTip(QObject::tr("Create a new file."));
-//    connect(newAct, &QAction::triggered, this, &newAct);
-//}
-
-//void MainWindow::createMenus(){
-//    fileMenu = menuBar()->addMenu(QObject::tr("&File"));
-//    fileMenu->addAction(newAct);
-//}
-
-//#ifndef QT_NO_CONTEXTMENU
-//void MainWindow::contextMenuEvent(QContextMenuEvent *event){
-//    QMenu menu(this);
-//    menu.exec(event->globalPos());
-//}
-//#endif //QT_NO_CONTEXTMENU
+template <class T> T childObject(QQmlApplicationEngine& engine,
+                                 const QString& objectName,
+                                 const QString& propertyName)
+{
+    QList<QObject*> rootObjects = engine.rootObjects();
+    foreach (QObject* object, rootObjects)
+    {
+        QObject* child = object->findChild<QObject*>(objectName);
+        if (child != 0)
+        {
+            std::string s = propertyName.toStdString();
+            QObject* object = child->property(s.c_str()).value<QObject*>();
+            Q_ASSERT(object != 0);
+            T prop = dynamic_cast<T>(object);
+            Q_ASSERT(prop != 0);
+            return prop;
+        }
+    }
+    return (T) 0;
+}
 
 int main(int argc, char *argv[])
 {
 
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
-
+    qmlRegisterType<DocumentHandler>("local.nicolasien.editorlac", 1, 0, "DocumentHandler");
     QQmlApplicationEngine engine;
     engine.load(QUrl(QLatin1String("qrc:/main.qml")));
 
-    //QQuickTextDocument(QQuickItem * codeArea);
+//    QQuickTextDocument * activeCodeText = childObject<QQuickTextDocument*>(engine, "activeCodeText", "textDocument");
+//    Q_ASSERT(activeCodeText != 0);
 
-    return app.exec();
+//    customizedSyntaxHighligher * parser = new customizedSyntaxHighligher(activeCodeText->textDocument());
+    int ret = app.exec();
+//    delete parser;
+    return ret;
 }
