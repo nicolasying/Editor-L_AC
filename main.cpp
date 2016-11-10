@@ -37,11 +37,11 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     engine.load(QUrl(QLatin1String("qrc:/main.qml")));
 
-//    QQuickTextDocument * activeCodeText = childObject<QQuickTextDocument*>(engine, "activeCodeText", "textDocument");
-//    Q_ASSERT(activeCodeText != 0);
+    QQuickTextDocument * activeCodeText = childObject<QQuickTextDocument*>(engine, "activeCodeText", "textDocument");
+    Q_ASSERT(activeCodeText != 0);
 
-//    customizedSyntaxHighligher * parser = new customizedSyntaxHighligher(activeCodeText->textDocument());
+    customizedSyntaxHighligher * parser = new customizedSyntaxHighligher(activeCodeText->textDocument());
     int ret = app.exec();
-//    delete parser;
+    delete parser;
     return ret;
 }

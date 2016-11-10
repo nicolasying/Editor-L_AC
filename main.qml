@@ -29,7 +29,9 @@ ApplicationWindow {
         id: newTabAction
         shortcut: "ctrl+T"
         onTriggered: {
-            fileTabs.insertTab(fileTabs.currentIndex + 1, "new tab" + fileTabs.currentIndex, tempComp)
+            fileTabs.addTab("New File", Qt.createComponent("/CodeTab.qml"));
+            fileTabs.getTab(fileTabs.count - 1).active = true;
+            //fileTabs.getTab(fileTabs.currentIndex).
         }
     }
 
@@ -39,6 +41,10 @@ ApplicationWindow {
         onTriggered: fileTabs.removeTab(fileTabs.currentIndex)
     }
 
+    Action {
+        id: noAction
+        onTriggered: errorDialog.open()
+    }
 
     menuBar: MenuBar {
         Menu {
@@ -63,10 +69,11 @@ ApplicationWindow {
                     fileDialog.open()
                 }
             }
-            MenuSeparator {}
+            MenuSeparator {
+            }
             MenuItem {
                 text: "Close Current Tab"
-                action: closeTabAction;
+                action: closeTabAction
             }
             MenuItem {
                 text: "Close All Tabs"
@@ -92,17 +99,15 @@ ApplicationWindow {
         }
     }
 
-
-
     FileDialog {
         id: fileDialog
         nameFilters: ["LAC files (*.lac)", "Text files (*.txt)", "All files (*)"]
-//        onAccepted: {
-//            if (fileDialog.selectExisting)
-//                document.fileUrl = fileUrl
-//            else
-//                document.saveAs(fileUrl, selectedNameFilter)
-//        }
+        //        onAccepted: {
+        //            if (fileDialog.selectExisting)
+        //                document.fileUrl = fileUrl
+        //            else
+        //                document.saveAs(fileUrl, selectedNameFilter)
+        //        }
     }
 
     MessageDialog {
@@ -122,7 +127,6 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.bottomMargin: 0
-
 
         ToolBar {
             id: functionalityBar
@@ -170,9 +174,7 @@ ApplicationWindow {
                 anchors.leftMargin: 0
                 anchorstop: helpButton.bottom
                 iconSVG: "icons/settings.svg"
-
             }
-
         }
 
         TabView {
@@ -188,7 +190,7 @@ ApplicationWindow {
             style: TabViewStyle {
                 frameOverlap: 1
                 tab: Rectangle {
-                    color: styleData.selected ? "#263238" :"#455A64"
+                    color: styleData.selected ? "#263238" : "#455A64"
                     implicitWidth: Math.max(text.width + 4, 80)
                     implicitHeight: 30
                     Text {
@@ -206,28 +208,29 @@ ApplicationWindow {
                         anchors.bottomMargin: 0
                     }
                 }
-                frame: Rectangle { color: "#263238" }
+                frame: Rectangle {
+                    color: "#263238"
+                }
             }
 
-//            TextEdit {
-//                id: activeCodeText
-//                visible: false
-//            }
+            //            TextEdit {
+            //                id: activeCodeText
+            //                visible: false
+            //            }
 
-//            function setActiveCodeText (activeTabInd) {
-//                codeText = fileTabs.currentIndex
+            //            function setActiveCodeText (activeTabInd) {
+            //                codeText = fileTabs.currentIndex
 
-//            }
+            //            }
             Component {
                 id: tempComp
                 Tab {
-                    TextEdit{
-
+                    TextEdit {
+                        width: parent.width
+                        height: parent.height
                     }
                 }
-
             }
-
 
             Tab {
                 title: "Any tab"
@@ -235,14 +238,14 @@ ApplicationWindow {
         }
     }
 
-
     StatusBar {
         id: statusBar
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
         height: 20
-        RowLayout{
+        RowLayout {
             anchors.fill: parent
+
             //            Label {
             //                id: positionCounter
             //                text: "#Line: "+ codeArea.lineCount + " Ln: " + codeArea.cursorPosition
@@ -251,7 +254,6 @@ ApplicationWindow {
             //                //flat: true
             //                height: 20
             //            }
-
             Label {
                 id: languageIndicator
                 text: "Language AC"
@@ -271,5 +273,4 @@ ApplicationWindow {
             }
         }
     }
-
 }
