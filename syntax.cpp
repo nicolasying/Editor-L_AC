@@ -32,24 +32,27 @@ void customizedSyntaxHighligher::highlightBlock(const QString &text) {
     }
 }
 
-customizedSyntaxHighligher::customizedSyntaxHighligher(QTextDocument *parent, codingLanguage langFlag) : QSyntaxHighlighter(parent) {
+customizedSyntaxHighligher::customizedSyntaxHighligher(QTextDocument *parent, codingLanguage flag) : QSyntaxHighlighter(parent) {
+    langFlag = flag;
+    latch = 0;
+
     QFile langFile(getLangFileInfo(langFlag));
 
     if (!langFile.exists()) {
-        langFileFetcher * tempFetcher = new langFileFetcher(langFlag);
         qDebug("Downloading file.");
-        connect(tempFetcher, SIGNAL(downloaded()), this, SLOT(constructorRest(codingLanguage langFlag)));
-        return;
+        QEventLoop loop;
+        langFileFetcher * tempFetcher = new langFileFetcher(langFlag);
+        qDebug("Fetcher constructed");
+        //loop.connect(tempFetcher, SIGNAL(downloaded()), SLOT(quit()));
+        qDebug("Singal connected");
+        //loop.exec();
+        // waiting mechanism to implement.
     }
-    constructorRest(langFlag);
-}
-
-void customizedSyntaxHighligher::constructorRest(codingLanguage flag) {
-    QFile langFile(getLangFileInfo(flag));
 
     qDebug("with local language file.");
     if (!langFile.open(QIODevice::ReadOnly)) {
-        qWarning("Couldn't open save file.");
+        qWarning("Couldn't open language file.");
+
     }
 
     HighlightingRule rule;
@@ -78,6 +81,10 @@ void customizedSyntaxHighligher::constructorRest(codingLanguage flag) {
 
     commentStartExpression = QRegExp("(^| |\t)[(] ");
     commentEndExpression = QRegExp("[)]");
+}
+
+void customizedSyntaxHighligher::constructorRest() {
+    latch = 1;
 }
 
 //void syntaxHilighterHandler::newTabCreated(const char * objectName) {

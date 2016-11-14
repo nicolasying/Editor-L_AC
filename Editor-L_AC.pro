@@ -38,5 +38,3 @@ DISTFILES += \
 
 RESOURCES += \
     qtquickstyle.qrc
-
-QMAKE_LFLAGS += -v

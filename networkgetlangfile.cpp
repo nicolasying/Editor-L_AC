@@ -14,14 +14,16 @@ langFileFetcher::langFileFetcher(codingLanguage flag, QObject *parent) :
     qDebug("Fetcher: sending get request.");
     m_WebCtrl.setNetworkAccessible(QNetworkAccessManager::Accessible);
     m_WebCtrl.get(request);
+    qDebug("Fetcher: get request sent.");
 }
 
 langFileFetcher::~langFileFetcher() { }
 
 void langFileFetcher::fileDownloaded(QNetworkReply* pReply) {
+    qDebug("downloaded.");
     m_DownloadedData = pReply->readAll();
     saveFile();
-    qDebug("downloaded.");
+    qDebug("saved.");
     emit downloaded();
 }
 
@@ -30,6 +32,7 @@ QByteArray langFileFetcher::downloadedData() const {
 }
 
 void langFileFetcher::saveFile() {
+    qDebug("File saver.");
     QFile * destFile = new QFile(getLangFileInfo(flag));
     destFile->open(QIODevice::WriteOnly);
     if(destFile->isOpen()) {

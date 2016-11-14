@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[])
 {
-    codingLanguage flag = Lac;
+    codingLanguage flag = C;
     qDebug() << "http://nicolasying.github.io/" + getLangFileInfo(flag);
 
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 
     QQuickTextDocument * activeCodeText = childObject<QQuickTextDocument*>(engine, "activeCodeText", "textDocument");
     Q_ASSERT(activeCodeText != 0);
-    customizedSyntaxHighligher * newH = new customizedSyntaxHighligher(activeCodeText->textDocument(), (codingLanguage)Lac);
+    customizedSyntaxHighligher * newH = new customizedSyntaxHighligher(activeCodeText->textDocument(), flag);
 
     //    syntaxHilighterHandler highlighterHandler;
 //    (engine.rootContext())->setContextProperty("_Highlighters", &highlighterHandler);
