@@ -1,4 +1,4 @@
-#include "syntax.h"
+#include "universalheader.h"
 
 
 void customizedSyntaxHighligher::highlightBlock(const QString &text) {
@@ -33,7 +33,31 @@ void customizedSyntaxHighligher::highlightBlock(const QString &text) {
     }
 }
 
-customizedSyntaxHighligher::customizedSyntaxHighligher(QTextDocument *parent) : QSyntaxHighlighter(parent) {
+customizedSyntaxHighligher::customizedSyntaxHighligher(QTextDocument *parent, codingLanguage langFlag) : QSyntaxHighlighter(parent) {
+    switch (langFlag) {
+    case LAC:
+        QFile langFile(QStringLiteral("lac_language.json"));
+        break;
+    case C:
+        QFile langFile(QStringLiteral("c_language.json"));
+        break;
+    default:
+        qWarning("not a valid coding language");
+        exit(100);
+    }
+
+    if (!langFile.exists()) {
+        getLangFile(langFlag);
+    }
+    if (!langFile.open(QIODevice::ReadOnly)) {
+        exit(101);
+    }
+
+    QJsonDocument langInfo(QJsonDocument::fromJson((QByteArray)langFile.readAll()));
+    QJsonObject langObj = langInfo.object();
+    qDebug() << langObj["version"].toString().toLatin1().data();
+    
+    
     HighlightingRule rule;
 
     keywordFormat.setForeground(Qt::yellow);

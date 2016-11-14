@@ -1,0 +1,24 @@
+{
+    "language": "LAC",
+    "version": "1.0",
+
+    "keywords": [
+        "\\bdup\\b",
+        "\\bdrop\\b",
+        "\\bswap\\b",
+        "\\bif\\b",
+        "\\belse\\b",
+        "\\bthen\\b",
+        "(^| )[.]( |\t|$)",
+        "\\bcount\\b",
+        "\\btype\\b",
+        "(^| )[:]( |\t|$)"
+    ],
+
+    "string": "(^| |\t)\" [^\n]*\"( |\t|$)",
+    "single line comments": "(^| |\t)\\\\(( [^\n]*)|$)",
+    "multiline comments": {
+        "begin": "(^| |\t)[(] ",
+        "end": "[)]"
+    }
+}

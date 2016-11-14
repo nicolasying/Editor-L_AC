@@ -31,7 +31,7 @@ ApplicationWindow {
         onTriggered: {
             fileTabs.addTab("New File", Qt.createComponent("/CodeTab.qml"));
             fileTabs.getTab(fileTabs.count - 1).active = true;
-            //fileTabs.getTab(fileTabs.currentIndex).
+            //_Highlighters.newTabCreated("codeText")
         }
     }
 

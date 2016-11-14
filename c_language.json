@@ -1,0 +1,24 @@
+{
+    "language": "C",
+    "version": "1.0",
+
+    "keywords": [
+        "\\bint\\b",
+        "\\blong\\b",
+        "\\breturn\\b",
+        "\\bif\\b",
+        "\\belse\\b",
+        "\\binclude\\b",
+        "\\btypedef\\b",
+        "\\bstruct\\b",
+        "\\bconst\\b",
+        "\\bvoid\\b"
+    ],
+
+    "string": "\"[^\n]*\"",
+    "single line comments": "//(( [^\n]*)|$)",
+    "multiline comments": {
+        "begin": "/\\*",
+        "end": "\\*/"
+    }
+}

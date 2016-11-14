@@ -18,7 +18,8 @@ SOURCES += main.cpp \
 
 HEADERS  += \
     syntax.h \
-    documenthandler.h
+    documenthandler.h \
+    universalheader.h
 
 DISTFILES += \
     README.TXT \
@@ -29,7 +30,8 @@ DISTFILES += \
     icons/settings.svg \
     icons/welcome.svg \
     FunctionalityButton.qml \
-    CodeTab.qml
+    CodeTab.qml \
+    lac_language.json
 
 RESOURCES += \
     qtquickstyle.qrc

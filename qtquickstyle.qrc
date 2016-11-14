@@ -9,5 +9,6 @@
         <file>factorielle.lac</file>
         <file>FunctionalityButton.qml</file>
         <file>CodeTab.qml</file>
+        <file>lac_language.json</file>
     </qresource>
 </RCC>
