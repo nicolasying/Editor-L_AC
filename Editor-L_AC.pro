@@ -19,7 +19,8 @@ SOURCES += main.cpp \
 HEADERS  += \
     syntax.h \
     documenthandler.h \
-    universalheader.h
+    universalheader.h \
+    networkgetlangfile.h
 
 DISTFILES += \
     README.TXT \

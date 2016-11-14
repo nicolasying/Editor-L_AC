@@ -1,31 +1,8 @@
+#include "universalheader.h"
+
 #ifndef SYNTAX_H
 #define SYNTAX_H
 
-#include "universalheader.h"
-
-typedef enum codingLanguage {
-    Lac,
-    C
-} codingLanguage;
-
-void getLangFile (codingLanguage) {
-    QNetworkAccessManager *manager = new QNetworkAccessManager();
-    connect(manager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(replyFinished(QNetworkReply*)));
-
-    switch (langFlag) {
-    case LAC:
-        QFile langFile(QStringLiteral("lac_language.json"));
-        break;
-    case C:
-        QFile langFile(QStringLiteral("c_language.json"));
-        break;
-    default:
-        qWarning("not a valid coding language");
-        exit(100);
-    }
-    QNetworkReply * manager->get(QNetworkRequest(QUrl("http://nicolasying.github.io/lac_language.json")));
-}
 
 extern QQmlApplicationEngine engine;
 

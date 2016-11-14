@@ -1,10 +1,7 @@
+#include "universalheader.h"
+
 #ifndef DOCUMENTHANDLER_H
 #define DOCUMENTHANDLER_H
-
-#include <QQuickTextDocument>
-#include <QtGui/QTextCharFormat>
-#include <QtCore/QTextCodec>
-#include <qqmlfile.h>
 
 QT_BEGIN_NAMESPACE
 class QTextDocument;

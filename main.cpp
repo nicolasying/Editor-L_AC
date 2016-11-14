@@ -1,26 +1,9 @@
-#include "syntax.h"
-#include "documenthandler.h"
-#include <QApplication>
-#include <QWindow>
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-#include <QQuickStyle>
-#include <QMenuBar>
-#include <QQmlContext>
-#include <QJsonDocument>
-#include <QJsonObject>
+#include "universalheader.h"
 
 int main(int argc, char *argv[])
 {
-    QFile langFile(QStringLiteral("lac_language.json"));
-
-    if (!langFile.open(QIODevice::ReadOnly)) {
-        return 101;
-    }
-
-    QJsonDocument langInfo(QJsonDocument::fromJson((QByteArray)langFile.readAll()));
-    QJsonObject langObj = langInfo.object();
-    qWarning() << langObj["version"].toString().toLatin1().data();
+    codingLanguage flag = Lac;
+    qDebug() << "http://nicolasying.github.io/"+getLangFileInfo(flag);
 //    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 //    QGuiApplication app(argc, argv);
 //    qmlRegisterType<DocumentHandler>("local.nicolasien.editorlac", 1, 0, "DocumentHandler");
