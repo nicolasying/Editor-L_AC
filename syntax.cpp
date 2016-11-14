@@ -1,6 +1,5 @@
 #include "syntax.h"
 
-
 void customizedSyntaxHighligher::highlightBlock(const QString &text) {
     foreach (const HighlightingRule &rule, highlightingRules) {
         QRegExp expression(rule.pattern);
@@ -33,7 +32,26 @@ void customizedSyntaxHighligher::highlightBlock(const QString &text) {
     }
 }
 
-customizedSyntaxHighligher::customizedSyntaxHighligher(QTextDocument *parent) : QSyntaxHighlighter(parent) {
+customizedSyntaxHighligher::customizedSyntaxHighligher(QTextDocument *parent, codingLanguage langFlag) : QSyntaxHighlighter(parent) {
+    QFile langFile(getLangFileInfo(langFlag));
+
+    if (!langFile.exists()) {
+        langFileFetcher * tempFetcher = new langFileFetcher(langFlag);
+        qDebug("Downloading file.");
+        connect(tempFetcher, SIGNAL(downloaded()), this, SLOT(constructorRest(codingLanguage langFlag)));
+        return;
+    }
+    constructorRest(langFlag);
+}
+
+void customizedSyntaxHighligher::constructorRest(codingLanguage flag) {
+    QFile langFile(getLangFileInfo(flag));
+
+    qDebug("with local language file.");
+    if (!langFile.open(QIODevice::ReadOnly)) {
+        qWarning("Couldn't open save file.");
+    }
+
     HighlightingRule rule;
 
     keywordFormat.setForeground(Qt::yellow);

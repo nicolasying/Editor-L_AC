@@ -1,17 +1,30 @@
-#include "universalheader.h"
-
 #ifndef NETWORKGETLANGFILE_H
 #define NETWORKGETLANGFILE_H
 
+#include "universalheader.h"
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QFile>
 
+class langFileFetcher : public QObject
+{
+    Q_OBJECT
+public:
+    explicit langFileFetcher(codingLanguage flag, QObject *parent = 0);
+    virtual ~langFileFetcher();
+    QByteArray downloadedData() const;
 
-void getLangFile (codingLanguage flag) {
-    QNetworkAccessManager *manager = new QNetworkAccessManager();
-    connect(manager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(replyFinished(QNetworkReply*)));
+signals:
+    void downloaded();
 
+private slots:
+    void fileDownloaded(QNetworkReply* pReply);
+    void saveFile();
 
-    //QNetworkReply * Reply manager->get(QNetworkRequest(QUrl("http://nicolasying.github.io/"+getLangFileInfo(codingLanguage))));
-}
+private:
+    codingLanguage flag;
+    QNetworkAccessManager m_WebCtrl;
+    QByteArray m_DownloadedData;
+};
 
 #endif // NETWORKGETLANGFILE_H

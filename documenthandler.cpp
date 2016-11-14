@@ -1,16 +1,9 @@
-
 #include "documenthandler.h"
 
-#include <QtGui/QTextDocument>
-#include <QtGui/QTextCursor>
-#include <QtCore/QFileInfo>
 
 DocumentHandler::DocumentHandler()
     : m_target(0)
     , m_doc(0)
-//    , m_cursorPosition(-1)
-//    , m_selectionStart(0)
-//    , m_selectionEnd(0)
 {
 }
 
@@ -111,40 +104,7 @@ QString DocumentHandler::text() const
     return m_text;
 }
 
-//void DocumentHandler::setCursorPosition(int position)
-//{
-//    if (position == m_cursorPosition)
-//        return;
-
-//    m_cursorPosition = position;
-
-//    reset();
-//}
-
 void DocumentHandler::reset()
 {
     return;
 }
-
-//QTextCursor DocumentHandler::textCursor() const
-//{
-//    QTextCursor cursor = QTextCursor(m_doc);
-//    if (m_selectionStart != m_selectionEnd) {
-//        cursor.setPosition(m_selectionStart);
-//        cursor.setPosition(m_selectionEnd, QTextCursor::KeepAnchor);
-//    } else {
-//        cursor.setPosition(m_cursorPosition);
-//    }
-//    return cursor;
-//}
-
-
-//void DocumentHandler::setSelectionStart(int position)
-//{
-//    m_selectionStart = position;
-//}
-
-//void DocumentHandler::setSelectionEnd(int position)
-//{
-//    m_selectionEnd = position;
-//}

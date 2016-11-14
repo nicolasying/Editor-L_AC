@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.LocalStorage 2.0
 import Qt.labs.folderlistmodel 2.1
 import QtQuick.Dialogs 1.2
-import local.nicolasien.editorlac 1.0
+//import local.nicolasien.editorlac 1.0
 
 //Tab {
 //    id: tab1
@@ -68,10 +68,9 @@ Item {
         }
         TextEdit {
             id: codeText
-            //text: tabDocument.text
-            objectName: "codeText"
-            Accessible.name: "codeText"
-            textDocument.objectName: "codeText"
+
+            objectName: "activeCodeText"
+
             width: flick.width
             height: flick.height
             anchors.bottom: parent.bottom

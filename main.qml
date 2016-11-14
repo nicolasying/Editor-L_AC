@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.LocalStorage 2.0
 import Qt.labs.folderlistmodel 2.1
 import QtQuick.Dialogs 1.2
-import local.nicolasien.editorlac 1.0
+//import local.nicolasien.editorlac 1.0
 
 ApplicationWindow {
     id: applicationWindow
@@ -16,15 +16,15 @@ ApplicationWindow {
     height: 768
     title: qsTr("Editor for Language AC")
 
-    DocumentHandler {
-        id: tabDocument
-        Component.onCompleted: tabDocument.fileUrl = "qrc:/factorielle.lac"
+    //    DocumentHandler {
+    //        id: tabDocument
+    //        Component.onCompleted: tabDocument.fileUrl = "qrc:/factorielle.lac"
 
-        onError: {
-            errorDialog.text = message
-            errorDialog.visible = true
-        }
-    }
+    //        onError: {
+    //            errorDialog.text = message
+    //            errorDialog.visible = true
+    //        }
+    //    }
     Action {
         id: newTabAction
         shortcut: "ctrl+T"
@@ -151,7 +151,7 @@ ApplicationWindow {
                 y: 30
                 anchors.leftMargin: 0
                 iconSVG: "icons/welcome.svg"
-                //buttonAction: fileDialog.open()
+                buttonAction: noAction
             }
             FunctionalityButton {
                 id: editButton
@@ -167,6 +167,7 @@ ApplicationWindow {
                 anchors.leftMargin: 0
                 anchorstop: editButton.bottom
                 iconSVG: "icons/help.svg"
+                buttonAction: noAction
             }
             FunctionalityButton {
                 id: settingsButton
@@ -174,6 +175,7 @@ ApplicationWindow {
                 anchors.leftMargin: 0
                 anchorstop: helpButton.bottom
                 iconSVG: "icons/settings.svg"
+                buttonAction: noAction
             }
         }
 
@@ -213,24 +215,59 @@ ApplicationWindow {
                 }
             }
 
-            //            TextEdit {
-            //                id: activeCodeText
-            //                visible: false
-            //            }
+            TextEdit {
+                id: codeText
+                //text: tabDocument.text
+                objectName: "activeCodeText"
+                width: 500
+                height: 500
+                //width: flick.width
+                //height: flick.height
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 0
+                anchors.right: parent.right
+                anchors.rightMargin: 0
+                anchors.left: parent.left
 
-            //            function setActiveCodeText (activeTabInd) {
-            //                codeText = fileTabs.currentIndex
+                //anchors.left: textEnum.right
+                anchors.leftMargin: 0
+                anchors.top: parent.top
+                anchors.topMargin: 0
+                textMargin: 0
+                wrapMode: TextEdit.NoWrap
 
-            //            }
+                selectionColor: "#78909C"
+                color: "#FFFFFF"
+                selectedTextColor: "#CFD8DC"
+
+
+                font.pointSize: 14
+                font.family: "Menlo"
+                selectByKeyboard: true
+                selectByMouse: true
+
+                activeFocusOnPress: true
+                activeFocusOnTab: true
+                //onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
+                Component.onCompleted: forceActiveFocus()
+            }
+
             Component {
                 id: tempComp
-                Tab {
-                    TextEdit {
-                        width: parent.width
-                        height: parent.height
-                    }
+                CodeTab {
+
                 }
             }
+//            TextEdit {
+//                objectName: "activeCodeText"
+//                visible: true
+//                anchors.left: parent.left
+//                anchors.leftMargin: 0
+//                anchors.top: parent.top
+//                anchors.topMargin: 0
+//                width: 500
+//                height: 500
+//            }
 
             Tab {
                 title: "Any tab"

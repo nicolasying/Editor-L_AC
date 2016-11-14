@@ -1,50 +1,39 @@
-#include "syntax.h"
-#include "documenthandler.h"
-#include "networkgetlangfile.h"
-
 #ifndef UNIVERSALHEADER_H
 #define UNIVERSALHEADER_H
 
-#include <QApplication>
-#include <QFileInfo>
-#include <QGuiApplication>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QMainWindow>
-#include <QMenuBar>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QObject>
-#include <QQmlApplicationEngine>
-#include <QQmlContext>
-#include <QQmlFile>
-#include <QQuickStyle>
-#include <QQuickTextDocument>
 #include <QString>
-#include <QSyntaxHighlighter>
-#include <QTextCharFormat>
-#include <QTextCodec>
-#include <QTextCursor>
-#include <QTextDocument>
-#include <QWindow>
+#include <QQmlApplicationEngine>
+#include <QObject>
 
 typedef enum codingLanguage {
     Lac,
     C
 } codingLanguage;
 
-QString getLangFileInfo(codingLanguage langFlag) {
-    switch (langFlag) {
-    case Lac:
-        return QStringLiteral("lac_language.json");
-        break;
-    case C:
-        return QStringLiteral("c_language.json");
-        break;
-    default:
-        qWarning("invalid language configured.");
-        exit(201);
+QString getLangFileInfo(codingLanguage langFlag);
+
+extern QQmlApplicationEngine engine;
+
+template <class T> T childObject(QQmlApplicationEngine& engine,
+                                 const QString& objectName,
+                                 const QString& propertyName)
+{
+    QList<QObject*> rootObjects = engine.rootObjects();
+    foreach (QObject* object, rootObjects)
+    {
+        QObject* child = object->findChild<QObject*>(objectName);
+        if (child != 0)
+        {
+            std::string s = propertyName.toStdString();
+            QObject* object = child->property(s.c_str()).value<QObject*>();
+            Q_ASSERT(object != 0);
+            T prop = dynamic_cast<T>(object);
+            Q_ASSERT(prop != 0);
+            return prop;
+        }
     }
+    return (T) 0;
 }
+
 
 #endif // UNIVERSALHEADER_H

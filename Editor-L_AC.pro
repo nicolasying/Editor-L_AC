@@ -4,23 +4,25 @@
 #
 #-------------------------------------------------
 
-QT       += core gui quickcontrols2
+QT       += core gui quick qml network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Editor-L_AC
 TEMPLATE = app
 
-
 SOURCES += main.cpp \
     syntax.cpp \
-    documenthandler.cpp
+    documenthandler.cpp \
+    universalfunc.cpp \
+    networkgetlangfile.cpp
 
 HEADERS  += \
     syntax.h \
     documenthandler.h \
     universalheader.h \
-    networkgetlangfile.h
+    networkgetlangfile.h \
+    highlighterhandler.h
 
 DISTFILES += \
     README.TXT \
@@ -36,3 +38,5 @@ DISTFILES += \
 
 RESOURCES += \
     qtquickstyle.qrc
+
+QMAKE_LFLAGS += -v
