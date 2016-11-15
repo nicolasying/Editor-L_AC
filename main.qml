@@ -45,6 +45,11 @@ ApplicationWindow {
         onTriggered: errorDialog.open()
     }
 
+    Action {
+        id: langChangedAction
+        onTriggered: synHandler.targetLang = languageIndicator.currentText
+    }
+
     menuBar: MenuBar {
         Menu {
             title: "File"
@@ -98,6 +103,7 @@ ApplicationWindow {
         }
     }
 
+
     FileDialog {
         id: fileDialog
         nameFilters: ["LAC files (*.lac)", "Text files (*.txt)", "All files (*)"]
@@ -126,6 +132,10 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.bottomMargin: 0
+        anchors.topMargin: 0
+        anchors.leftMargin: 0
+        anchors.rightMargin: 0
+
         Rectangle{
             anchors.top: parent.top
             anchors.bottom: parent.bottom
@@ -171,7 +181,7 @@ ApplicationWindow {
                 anchors.leftMargin: 0
                 iconSVG: "icons/edit.svg"
                 anchorstop: welcomeButton.bottom
-                buttonAction: newTabAction
+                buttonAction: noAction
             }
             FunctionalityButton {
                 id: helpButton
@@ -280,8 +290,6 @@ ApplicationWindow {
             }
         }
     }
-
-
     StatusBar {
         id: statusBar
         anchors.bottom: parent.bottom
@@ -308,11 +316,9 @@ ApplicationWindow {
 
                 height: 20
                 implicitWidth: 50
-                onAccepted: Action {
-                    id: langChangedAction
-                    onTriggered: synHandler.targetLang = languageIndicator.currentText
-                }
+                onCurrentIndexChanged: synHandler.targetLang = languageIndicator.currentText
             }
+
 
 
             Label {
@@ -354,3 +360,4 @@ ApplicationWindow {
         }
     }
 }
+

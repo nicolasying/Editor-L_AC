@@ -12,7 +12,7 @@ typedef enum codingLanguage {
 
 QString getLangFileInfo(codingLanguage langFlag);
 
-extern QQmlApplicationEngine engine;
+extern QQmlApplicationEngine * engine_p;
 
 template <class T> T childObject(QQmlApplicationEngine& engine,
                                  const QString& objectName,

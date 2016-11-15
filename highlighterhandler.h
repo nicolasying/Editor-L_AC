@@ -10,20 +10,22 @@
 
 class syntaxHilighterHandler : public QObject {
     Q_OBJECT
-    Q_PROPERTY(codingLanguage targetLang READ targetLang WRITE langChanged)
+
+    Q_PROPERTY(QString targetLang READ targetLang WRITE langChanged)
 private:
-    QVector<customizedSyntaxHighligher *> highlighters;
+    customizedSyntaxHighligher * highlighters[2];
     int counter;
 //    QQuickItem *m_target;
-    codingLanguage m_targetLang;
-    codingLanguage targetLang() const {return m_targetLang;}
+//    QObject * whatever;
+    QString m_targetLang;
+    QString targetLang() const {return m_targetLang;}
 public:
     syntaxHilighterHandler();
     ~syntaxHilighterHandler();
     void constructHighlighter(codingLanguage langFlag);
 
 public slots:
-    void langChanged(const codingLanguage &arg);
+    void langChanged(const QString &arg);
     void langFileReady(codingLanguage langFlag);
 };
 
