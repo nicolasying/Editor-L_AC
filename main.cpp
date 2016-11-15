@@ -20,9 +20,6 @@ int main(int argc, char *argv[])
     Q_ASSERT(activeCodeText != 0);
     customizedSyntaxHighligher * newH = new customizedSyntaxHighligher(activeCodeText->textDocument(), flag);
 
-    //    syntaxHilighterHandler highlighterHandler;
-//    (engine.rootContext())->setContextProperty("_Highlighters", &highlighterHandler);
-
     int ret = app.exec();
     //delete parser;
     return ret;

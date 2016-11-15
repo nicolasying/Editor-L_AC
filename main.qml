@@ -98,12 +98,12 @@ ApplicationWindow {
     FileDialog {
         id: fileDialog
         nameFilters: ["LAC files (*.lac)", "Text files (*.txt)", "All files (*)"]
-        //        onAccepted: {
-        //            if (fileDialog.selectExisting)
-        //                document.fileUrl = fileUrl
-        //            else
-        //                document.saveAs(fileUrl, selectedNameFilter)
-        //        }
+        onAccepted: {
+            if (fileDialog.selectExisting)
+                document.fileUrl = fileUrl
+            else
+                document.saveAs(fileUrl, selectedNameFilter)
+        }
     }
 
     MessageDialog {
@@ -175,8 +175,10 @@ ApplicationWindow {
             }
         }
 
-        TabView {
-            id: fileTabs
+
+
+        TextEdit {
+            id: codeText
             anchors.right: parent.right
             anchors.rightMargin: 0
             anchors.top: parent.top
@@ -185,91 +187,41 @@ ApplicationWindow {
             anchors.leftMargin: 0
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
-            style: TabViewStyle {
-                frameOverlap: 1
-                tab: Rectangle {
-                    color: styleData.selected ? "#263238" : "#455A64"
-                    implicitWidth: Math.max(text.width + 4, 80)
-                    implicitHeight: 30
-                    Text {
-                        id: text
-                        anchors.centerIn: parent
-                        text: styleData.title
-                        color: styleData.selected ? "#ECEFF1" : "#CFD8DC"
-                    }
-                    Rectangle {
-                        visible: styleData.selected ? true : false
-                        color: "#B0BEC5"
-                        width: parent.width
-                        height: 2
-                        anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 0
-                    }
-                }
-                frame: Rectangle {
-                    color: "#263238"
-                }
-            }
-
-            TextEdit {
-                id: codeText
-                text: tabDocument.text
-                objectName: "activeCodeText"
-                width: 500
-                height: 500
-                //width: flick.width
-                //height: flick.height
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: 0
-                anchors.right: parent.right
-                anchors.rightMargin: 0
-                anchors.left: parent.left
-
-                //anchors.left: textEnum.right
-                anchors.leftMargin: 0
-                anchors.top: parent.top
-                anchors.topMargin: 0
-                textMargin: 0
-                wrapMode: TextEdit.NoWrap
-
-                selectionColor: "#78909C"
-                color: "#FFFFFF"
-                selectedTextColor: "#CFD8DC"
 
 
-                font.pointSize: 14
-                font.family: "Menlo"
-                selectByKeyboard: true
-                selectByMouse: true
 
-                activeFocusOnPress: true
-                activeFocusOnTab: true
-                //onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
-                Component.onCompleted: forceActiveFocus()
-            }
+            text: tabDocument.text
+            objectName: "activeCodeText"
 
-            Component {
-                id: tempComp
-                CodeTab {
+            textMargin: 0
+            wrapMode: TextEdit.NoWrap
 
-                }
-            }
-//            TextEdit {
-//                objectName: "activeCodeText"
-//                visible: true
-//                anchors.left: parent.left
-//                anchors.leftMargin: 0
-//                anchors.top: parent.top
-//                anchors.topMargin: 0
-//                width: 500
-//                height: 500
-//            }
+            selectionColor: "#78909C"
+            color: "#FFFFFF"
+            selectedTextColor: "#CFD8DC"
 
-            Tab {
-                title: "Any tab"
+
+            font.pointSize: 14
+            font.family: "Menlo"
+            selectByKeyboard: true
+            selectByMouse: true
+
+            activeFocusOnPress: true
+            activeFocusOnTab: true
+            //onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
+            Component.onCompleted: forceActiveFocus()
+
+            style:
+        }
+
+        Component {
+            id: tempComp
+            CodeTab {
+
             }
         }
     }
+
 
     StatusBar {
         id: statusBar
@@ -279,14 +231,14 @@ ApplicationWindow {
         RowLayout {
             anchors.fill: parent
 
-            //            Label {
-            //                id: positionCounter
-            //                text: "#Line: "+ codeArea.lineCount + " Ln: " + codeArea.cursorPosition
-            //                font.pointSize: 12
-            //                //checkable: false
-            //                //flat: true
-            //                height: 20
-            //            }
+            Label {
+                id: positionCounter
+                text: "#Line: "+ codeText.lineCount
+                font.pointSize: 12
+                //checkable: false
+                //flat: true
+                height: 20
+            }
             Label {
                 id: languageIndicator
                 text: "Language AC"
