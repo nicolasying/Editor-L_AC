@@ -70,7 +70,7 @@ Item {
             id: codeText
 
             objectName: "activeCodeText"
-
+            //text:
             width: flick.width
             height: flick.height
             anchors.bottom: parent.bottom

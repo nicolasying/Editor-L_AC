@@ -44,7 +44,7 @@ Item {
                     anchors.centerIn: parent
                     height: 40
                     width: 40
-                    color: control.checked ? "#ECEFF1" : "#78909C"
+                    color: control.pressed ? "#ECEFF1" : "#78909C"
                 }
 
                 Image {

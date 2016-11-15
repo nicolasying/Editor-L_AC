@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.LocalStorage 2.0
 import Qt.labs.folderlistmodel 2.1
 import QtQuick.Dialogs 1.2
-//import local.nicolasien.editorlac 1.0
+import local.nicolasien.editorlac 1.0
 
 ApplicationWindow {
     id: applicationWindow
@@ -16,15 +16,11 @@ ApplicationWindow {
     height: 768
     title: qsTr("Editor for Language AC")
 
-    //    DocumentHandler {
-    //        id: tabDocument
-    //        Component.onCompleted: tabDocument.fileUrl = "qrc:/factorielle.lac"
+    DocumentHandler {
+        id: tabDocument
+        Component.onCompleted: tabDocument.fileUrl = "qrc:/factorielle.lac"
+    }
 
-    //        onError: {
-    //            errorDialog.text = message
-    //            errorDialog.visible = true
-    //        }
-    //    }
     Action {
         id: newTabAction
         shortcut: "ctrl+T"
@@ -217,7 +213,7 @@ ApplicationWindow {
 
             TextEdit {
                 id: codeText
-                //text: tabDocument.text
+                text: tabDocument.text
                 objectName: "activeCodeText"
                 width: 500
                 height: 500
