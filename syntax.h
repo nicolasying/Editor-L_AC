@@ -6,9 +6,14 @@
 #include <QQuickItem>
 #include <QQuickTextDocument>
 #include <QSyntaxHighlighter>
+#include <QStringList>
 #include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonValue>
 #include <QFile>
 #include <QEventLoop>
+#include <QVariantList>
 #include "networkgetlangfile.h"
 #include "universalheader.h"
 

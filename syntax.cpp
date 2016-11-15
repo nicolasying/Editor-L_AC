@@ -43,17 +43,28 @@ customizedSyntaxHighligher::customizedSyntaxHighligher(QTextDocument *parent, co
     }
 
     qDebug("with local language file.");
+
     if (!langFile.open(QIODevice::ReadOnly)) {
         qWarning("Couldn't open language file.");
         exit(301);
     }
 
+    QJsonDocument langJson(QJsonDocument::fromJson(langFile.readAll()));
+    QJsonObject langJsonObj = langJson.object();
+
+    QJsonArray keywordJsonArray = langJsonObj["keywords"].toArray();
+    QStringList keywordPatterns;
+    int keywordLength = keywordJsonArray.size();
+    for (int i = 0; i < keywordLength; i++) {
+        QString tempString = keywordJsonArray[i].toString();
+        keywordPatterns << tempString;
+        //qDebug(tempString.toLatin1().data());
+    }
+
     HighlightingRule rule;
 
     keywordFormat.setForeground(Qt::yellow);
-    QStringList keywordPatterns;
-    keywordPatterns << "\\bdup\\b" << "\\bdrop\\b" << "\\bswap\\b" << "\\bif\\b" << "\\belse\\b" << "\\bthen\\b"
-                    << "(^| )[.]( |\t|$)" << "\\bcount\\b" << "\\btype\\b" << "(^| )[:]( |\t|$)";
+
     foreach (const QString &pattern, keywordPatterns) {
         rule.pattern = QRegExp(pattern);
         rule.format = keywordFormat;
@@ -61,18 +72,20 @@ customizedSyntaxHighligher::customizedSyntaxHighligher(QTextDocument *parent, co
     }
 
     stringFormat.setForeground(QColor(32, 142, 255));
-    rule.pattern = QRegExp("(^| |\t)\" [^\n]*\"( |\t|$)");
+    rule.pattern = QRegExp(langJsonObj["string"].toString());
     rule.format = stringFormat;
     highlightingRules.append(rule);
 
     singleLineCommentFormat.setForeground(QColor(128, 128, 128, 200));
-    rule.pattern = QRegExp("(^| |\t)\\\\(( [^\n]*)|$)");
+    rule.pattern = QRegExp(langJsonObj["single line comments"].toString());
     rule.format = singleLineCommentFormat;
     highlightingRules.append(rule);
 
     multiLineCommentFormat.setForeground(QColor(128, 128, 128, 200));
 
-    commentStartExpression = QRegExp("(^| |\t)[(] ");
-    commentEndExpression = QRegExp("[)]");
+    QJsonValue multiLineBeginJson = (langJsonObj["multiline comments"].toObject())["begin"];
+
+    commentStartExpression = QRegExp(((langJsonObj["multiline comments"].toObject())["begin"]).toString());
+    commentEndExpression = QRegExp(((langJsonObj["multiline comments"].toObject())["end"]).toString());
 }
 
