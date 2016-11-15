@@ -20,9 +20,7 @@ ApplicationWindow {
         id: tabDocument
         Component.onCompleted: tabDocument.fileUrl = "qrc:/factorielle.lac"
     }
-    HighliterHandler {
-        id: synHandler
-    }
+
 
     Action {
         id: newTabAction
@@ -358,6 +356,9 @@ ApplicationWindow {
                 }
             }
         }
+    }
+    HighliterHandler {
+        id: synHandler
     }
 }
 

@@ -17,14 +17,24 @@ syntaxHilighterHandler::~syntaxHilighterHandler() {
 void syntaxHilighterHandler::langFileReady (codingLanguage langFlag) {
     QQuickTextDocument * activeCodeText = childObject<QQuickTextDocument*>((*engine_p), "activeCodeText", "textDocument");
     Q_ASSERT(activeCodeText != 0);
-
-    highlighters[0] = new customizedSyntaxHighligher(activeCodeText->textDocument(), langFlag);
     counter++;
+    highlighters[0] = new customizedSyntaxHighligher(activeCodeText->textDocument(), langFlag);
 }
 
 void syntaxHilighterHandler::langChanged(const QString &arg) {
     qDebug("synHandler: language changed.");
-    if (counter == 0) return;
+    static int changeInstance = 0;
+    changeInstance++;
+    if (changeInstance == 1) return;
+    codingLanguage langFlag = C;
+    if (arg != "C") langFlag = Lac;
+
+    if (counter == 0) {
+        qDebug("synHandler: initial highlighter.");
+        this->constructHighlighter(langFlag);
+        return;
+    }
+
     if (highlighters[0] != NULL) {
         qDebug("synHandler: deleting highlighter.");
         try { delete highlighters[0]; }
@@ -33,8 +43,6 @@ void syntaxHilighterHandler::langChanged(const QString &arg) {
         }
     }
     counter--;
-    codingLanguage langFlag = C;
-    if (arg != "C") langFlag = Lac;
     this->constructHighlighter(langFlag);
 }
 

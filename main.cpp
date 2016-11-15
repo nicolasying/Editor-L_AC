@@ -10,7 +10,7 @@ QQmlApplicationEngine * engine_p;
 
 int main(int argc, char *argv[])
 {
-    codingLanguage flag = Lac;
+//    codingLanguage flag = Lac;
 
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
@@ -20,8 +20,8 @@ int main(int argc, char *argv[])
     engine_p = &engine;
     engine.load(QUrl(QLatin1String("qrc:/main.qml")));
 
-    syntaxHilighterHandler * highlighterHandler = new syntaxHilighterHandler();
-    highlighterHandler->constructHighlighter(flag);
+//    syntaxHilighterHandler * highlighterHandler = new syntaxHilighterHandler();
+//    highlighterHandler->constructHighlighter(flag);
 
     int ret = app.exec();
     return ret;
