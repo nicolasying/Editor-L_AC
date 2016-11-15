@@ -18,24 +18,12 @@ ApplicationWindow {
 
     DocumentHandler {
         id: tabDocument
-        Component.onCompleted: tabDocument.fileUrl = "qrc:/factorielle.lac"
-    }
+        target: codeText
+        Component.onCompleted: {
 
-
-    Action {
-        id: newTabAction
-        shortcut: "ctrl+T"
-        onTriggered: {
-            fileTabs.addTab("New File", Qt.createComponent("/CodeTab.qml"));
-            fileTabs.getTab(fileTabs.count - 1).active = true;
-            //_Highlighters.newTabCreated("codeText")
+            tabDocument.fileUrl = "qrc:/factorielle.lac"
+            //synHandler.targetLang = languageIndicator.currentText
         }
-    }
-
-    Action {
-        id: closeTabAction
-        shortcut: "ctrl+W"
-        onTriggered: fileTabs.removeTab(fileTabs.currentIndex)
     }
 
     Action {
@@ -44,8 +32,41 @@ ApplicationWindow {
     }
 
     Action {
-        id: langChangedAction
-        onTriggered: synHandler.targetLang = languageIndicator.currentText
+        id: welcomeAction
+        onTriggered: welcomeDialog.open()
+    }
+
+    Action {
+        id: openHelpPage
+        shortcut: StandardKey.HelpContents
+        onTriggered: Qt.openUrlExternally("https://github.com/nicolasying/Editor-L_AC")
+    }
+
+    Action {
+        id: copyAction
+        text: "&Copy"
+        shortcut: StandardKey.Copy
+        iconName: "edit-copy"
+        enabled: (!!activeFocusItem && !!activeFocusItem["copy"])
+        onTriggered: activeFocusItem.copy()
+    }
+
+    Action {
+        id: cutAction
+        text: "Cu&t"
+        shortcut: StandardKey.Cut
+        iconName: "edit-cut"
+        enabled: (!!activeFocusItem && !!activeFocusItem["cut"])
+        onTriggered: activeFocusItem.cut()
+    }
+
+    Action {
+        id: pasteAction
+        text: "&Paste"
+        shortcut: StandardKey.Paste
+        iconName: "edit-paste"
+        enabled: (!!activeFocusItem && !!activeFocusItem["paste"])
+        onTriggered: activeFocusItem.paste()
     }
 
     menuBar: MenuBar {
@@ -53,19 +74,28 @@ ApplicationWindow {
             title: "File"
             MenuItem {
                 text: "Open..."
-                shortcut: "Ctrl+O"
+                shortcut: StandardKey.Open
                 onTriggered: {
                     fileDialog.selectExisting = true
                     fileDialog.open()
                 }
             }
             MenuItem {
+                text: "New..."
+                shortcut: "Ctrl+N"
+                onTriggered: {
+                    tabDocument.fileUrl = "";
+                }
+            }
+            MenuSeparator {
+            }
+            MenuItem {
                 text: "Save"
-                shortcut: "Ctrl+S"
+                shortcut: StandardKey.Save
             }
             MenuItem {
                 text: "Save as..."
-                shortcut: "Ctrl+Shift+S"
+                shortcut: StandardKey.SaveAs
                 onTriggered: {
                     fileDialog.selectExisting = false
                     fileDialog.open()
@@ -73,13 +103,13 @@ ApplicationWindow {
             }
             MenuSeparator {
             }
-            MenuItem {
-                text: "Close Current Tab"
-                action: closeTabAction
-            }
+//            MenuItem {
+//                text: "Close Current Tab"
+//                action: closeTabAction
+//            }
             MenuItem {
                 text: "Close All Tabs"
-                shortcut: "Ctrl+Alt+W"
+                shortcut: StandardKey.Close
             }
         }
 
@@ -87,16 +117,23 @@ ApplicationWindow {
             title: "Edit"
             MenuItem {
                 text: "Cut"
-                shortcut: "Ctrl+X"
+                action: cutAction
             }
             MenuItem {
                 text: "Copy"
-                shortcut: "Ctrl+C"
+                action: copyAction
             }
 
             MenuItem {
                 text: "Paste"
-                shortcut: "Ctrl+V"
+                action: pasteAction
+            }
+        }
+        Menu {
+            title: "Help"
+            MenuItem {
+                text: "Go to source page"
+                action: openHelpPage
             }
         }
     }
@@ -116,7 +153,22 @@ ApplicationWindow {
     MessageDialog {
         id: errorDialog
         title: "Under construction"
-        text: "Wait for the next build."
+        icon: StandardIcon.Information
+        text: "Under construction"
+        informativeText: "Wait for the next build.\nOr Purchase a beta membership.\nContact ban.elliott@gmail.com"
+        standardButtons: StandardButton.Help | StandardButton.Ok
+        onHelp: Qt.openUrlExternally("https://github.com/nicolasying/Editor-L_AC")
+    }
+
+    Dialog {
+        id: welcomeDialog
+        title: "A few essentials"
+        width: 800
+        height: 600
+        contentItem: WelcomeDialog {
+
+        }
+
     }
 
     ExclusiveGroup {
@@ -171,7 +223,7 @@ ApplicationWindow {
                 y: 30
                 anchors.leftMargin: 0
                 iconSVG: "icons/welcome.svg"
-                buttonAction: noAction
+                buttonAction: welcomeAction
             }
             FunctionalityButton {
                 id: editButton
@@ -179,7 +231,12 @@ ApplicationWindow {
                 anchors.leftMargin: 0
                 iconSVG: "icons/edit.svg"
                 anchorstop: welcomeButton.bottom
-                buttonAction: noAction
+                buttonAction: Action {
+                    onTriggered: {
+                        fileDialog.selectExisting = true
+                        fileDialog.open()
+                    }
+                }
             }
             FunctionalityButton {
                 id: helpButton
@@ -187,7 +244,7 @@ ApplicationWindow {
                 anchors.leftMargin: 0
                 anchorstop: editButton.bottom
                 iconSVG: "icons/help.svg"
-                buttonAction: noAction
+                buttonAction: openHelpPage
             }
             FunctionalityButton {
                 id: settingsButton
@@ -275,18 +332,14 @@ ApplicationWindow {
                 activeFocusOnPress: true
                 activeFocusOnTab: true
                 onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
-                Component.onCompleted: forceActiveFocus()
+                Component.onCompleted: {
+                    forceActiveFocus()
 
+                }
 
             }//textEdit
         }//flicker
 
-        Component {
-            id: tempComp
-            CodeTab {
-
-            }
-        }
     }
     StatusBar {
         id: statusBar
@@ -313,8 +366,9 @@ ApplicationWindow {
                 model: ["Language C", "C"]
 
                 height: 20
-                implicitWidth: 50
+                implicitWidth: 100
                 onCurrentIndexChanged: synHandler.targetLang = languageIndicator.currentText
+
             }
 
 

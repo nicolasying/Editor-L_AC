@@ -36,7 +36,7 @@ void DocumentHandler::setFileUrl(const QUrl &arg)
                 setText(codec->toUnicode(data));
                 if (m_doc)
                     m_doc->setModified(false);
-                if (fileName.isEmpty())
+                if (fileName.isEmpty() || fileName == "://")
                     m_documentTitle = QStringLiteral("untitled.txt");
                 else
                     m_documentTitle = QFileInfo(fileName).fileName();
@@ -80,11 +80,11 @@ void DocumentHandler::saveAs(const QUrl &arg, const QString &fileType)
     if (!localPath.endsWith(ext))
         localPath += ext;
     QFile f(localPath);
-    if (!f.open(QFile::WriteOnly | QFile::Truncate | (isLac ? QFile::NotOpen : QFile::Text))) {
+    if (!f.open(QFile::WriteOnly | QFile::Truncate | QFile::Text)) {
         emit error(tr("Cannot save: ") + f.errorString());
         return;
     }
-    f.write((isLac ? m_doc->toHtml() : m_doc->toPlainText()).toLocal8Bit());
+    f.write((m_doc->toPlainText()).toLocal8Bit());
     f.close();
     setFileUrl(QUrl::fromLocalFile(localPath));
 }

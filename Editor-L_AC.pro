@@ -37,7 +37,9 @@ DISTFILES += \
     CodeTab.qml \
     lac_language.json \
     Nicolas.icns \
-    Info.plist
+    Info.plist \
+    WelcomeDialog.qml \
+    welcomePic.png
 
 ICON = Nicolas.icns
 

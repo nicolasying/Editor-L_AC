@@ -10,5 +10,7 @@
         <file>FunctionalityButton.qml</file>
         <file>CodeTab.qml</file>
         <file>lac_language.json</file>
+        <file>WelcomeDialog.qml</file>
+        <file>welcomePic.png</file>
     </qresource>
 </RCC>

@@ -16,7 +16,7 @@
     ],
 
     "string": "\"[^\n]*\"",
-    "single line comments": "//(( [^\n]*)|$)",
+    "single line comments": "//(([^\n]*)|$)",
     "multiline comments": {
         "begin": "/\\*",
         "end": "\\*/"

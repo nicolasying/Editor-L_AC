@@ -83,8 +83,6 @@ customizedSyntaxHighligher::customizedSyntaxHighligher(QTextDocument *parent, co
 
     multiLineCommentFormat.setForeground(QColor(128, 128, 128, 200));
 
-    QJsonValue multiLineBeginJson = (langJsonObj["multiline comments"].toObject())["begin"];
-
     commentStartExpression = QRegExp(((langJsonObj["multiline comments"].toObject())["begin"]).toString());
     commentEndExpression = QRegExp(((langJsonObj["multiline comments"].toObject())["end"]).toString());
 }
