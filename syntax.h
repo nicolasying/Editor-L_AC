@@ -3,6 +3,8 @@
 
 #include <QQmlApplicationEngine>
 #include <QObject>
+#include <QQuickItem>
+#include <QQuickTextDocument>
 #include <QSyntaxHighlighter>
 #include <QJsonDocument>
 #include <QFile>
@@ -14,13 +16,11 @@ class customizedSyntaxHighligher : public QSyntaxHighlighter {
     Q_OBJECT
 
 friend class syntaxHilighterHandler;
+
 protected:
     void highlightBlock(const QString &text);
 public:
-    customizedSyntaxHighligher(QTextDocument * parent, codingLanguage langFlag);
-
-private slots:
-    void constructorRest();
+    customizedSyntaxHighligher(QTextDocument * parent = NULL, codingLanguage langFlag = C);
 private:
     struct HighlightingRule {
         QRegExp pattern;
@@ -30,7 +30,6 @@ private:
     codingLanguage langFlag;
     QRegExp commentStartExpression;
     QRegExp commentEndExpression;
-    int latch; // indicating if the local language file exists.
     QTextCharFormat keywordFormat;
     QTextCharFormat singleLineCommentFormat;
     QTextCharFormat multiLineCommentFormat;

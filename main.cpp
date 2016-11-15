@@ -4,6 +4,7 @@
 #include <QQuickTextDocument>
 #include "syntax.h"
 #include "documenthandler.h"
+#include "highlighterhandler.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,12 +14,12 @@ int main(int argc, char *argv[])
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
     qmlRegisterType<DocumentHandler>("local.nicolasien.editorlac", 1, 0, "DocumentHandler");
+    qmlRegisterType<syntaxHilighterHandler>("local.nicolasien.editorlac", 1, 0, "HighliterHandler");
     QQmlApplicationEngine engine;
     engine.load(QUrl(QLatin1String("qrc:/main.qml")));
 
-    QQuickTextDocument * activeCodeText = childObject<QQuickTextDocument*>(engine, "activeCodeText", "textDocument");
-    Q_ASSERT(activeCodeText != 0);
-    customizedSyntaxHighligher * newH = new customizedSyntaxHighligher(activeCodeText->textDocument(), flag);
+    syntaxHilighterHandler * highlighterHandler = new syntaxHilighterHandler();
+    highlighterHandler->constructHighlighter(flag);
 
     int ret = app.exec();
     //delete parser;

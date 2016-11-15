@@ -15,7 +15,7 @@ public:
     QByteArray downloadedData() const;
 
 signals:
-    void downloaded();
+    void downloaded(codingLanguage flag);
 
 private slots:
     void fileDownloaded(QNetworkReply* pReply);

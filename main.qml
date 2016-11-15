@@ -14,11 +14,14 @@ ApplicationWindow {
     minimumHeight: 480
     width: 1024
     height: 768
-    title: qsTr("Editor for Language AC")
+    title: tabDocument.documentTitle + qsTr(" - Editor for Language AC")
 
     DocumentHandler {
         id: tabDocument
         Component.onCompleted: tabDocument.fileUrl = "qrc:/factorielle.lac"
+    }
+    HighliterHandler {
+        id: synHandler
     }
 
     Action {
@@ -100,9 +103,9 @@ ApplicationWindow {
         nameFilters: ["LAC files (*.lac)", "Text files (*.txt)", "All files (*)"]
         onAccepted: {
             if (fileDialog.selectExisting)
-                document.fileUrl = fileUrl
+                tabDocument.fileUrl = fileUrl
             else
-                document.saveAs(fileUrl, selectedNameFilter)
+                tabDocument.saveAs(fileUrl, selectedNameFilter)
         }
     }
 
@@ -123,6 +126,19 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.bottomMargin: 0
+        Rectangle{
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.topMargin: 0
+            anchors.bottomMargin: 0
+            anchors.leftMargin: 0
+            anchors.rightMargin: 0
+
+            color: "#263238"
+
+        }
 
         ToolBar {
             id: functionalityBar
@@ -174,45 +190,88 @@ ApplicationWindow {
                 buttonAction: noAction
             }
         }
+        Flickable {
+            id: flick
 
+            width: parent.width
+            height: parent.height
+            contentWidth: codeText.paintedWidth
+            contentHeight: codeText.paintedHeight
+            clip: true
 
-
-        TextEdit {
-            id: codeText
-            anchors.right: parent.right
-            anchors.rightMargin: 0
-            anchors.top: parent.top
-            anchors.topMargin: 0
-            anchors.left: functionalityBar.right
-            anchors.leftMargin: 0
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
+            anchors.left: functionalityBar.right
+            anchors.leftMargin: 0
+            anchors.top: parent.top
+            anchors.topMargin: 0
+            anchors.right: parent.right
+            anchors.rightMargin: 0
+
+            function ensureVisible(r)
+            {
+                if (contentX >= r.x)
+                    contentX = r.x;
+                else if (contentX+width <= r.x+r.width)
+                    contentX = r.x+r.width-width;
+                if (contentY >= r.y)
+                    contentY = r.y;
+                else if (contentY+height <= r.y+r.height)
+                    contentY = r.y+r.height-height;
+            }
+            Label {
+                id: textEnum
+                visible: true
+                width: 40
+
+                font.pointSize: fontSizer.value
+                font.family: "Menlo"
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 0
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+                anchors.top: parent.top
+                anchors.topMargin: 0
+                function popup (){
+                    for (var i = 0; i <= codeText.lineCount; i++) textEnum.text += i;
+                }
+            }
+
+            TextEdit {
+                id: codeText
+                anchors.right: parent.right
+                anchors.rightMargin: 0
+                anchors.top: parent.top
+                anchors.topMargin: 0
+                anchors.left: textEnum.right
+                anchors.leftMargin: 0
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 0
+
+                text: tabDocument.text
+                objectName: "activeCodeText"
+
+                textMargin: 0
+                wrapMode: TextEdit.NoWrap
+
+                selectionColor: "#78909C"
+                color: "#FFFFFF"
+                selectedTextColor: "#CFD8DC"
 
 
+                font.pointSize: fontSizer.value
+                font.family: "Menlo"
+                selectByKeyboard: true
+                selectByMouse: true
 
-            text: tabDocument.text
-            objectName: "activeCodeText"
-
-            textMargin: 0
-            wrapMode: TextEdit.NoWrap
-
-            selectionColor: "#78909C"
-            color: "#FFFFFF"
-            selectedTextColor: "#CFD8DC"
+                activeFocusOnPress: true
+                activeFocusOnTab: true
+                onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
+                Component.onCompleted: forceActiveFocus()
 
 
-            font.pointSize: 14
-            font.family: "Menlo"
-            selectByKeyboard: true
-            selectByMouse: true
-
-            activeFocusOnPress: true
-            activeFocusOnTab: true
-            //onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
-            Component.onCompleted: forceActiveFocus()
-
-            style:
-        }
+            }//textEdit
+        }//flicker
 
         Component {
             id: tempComp
@@ -227,34 +286,70 @@ ApplicationWindow {
         id: statusBar
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
-        height: 20
+        height: 30
         RowLayout {
             anchors.fill: parent
 
             Label {
                 id: positionCounter
-                text: "#Line: "+ codeText.lineCount
+                text: "#Line: "+ codeText.lineCount + ", Current Pos: " +codeText.cursorPosition
                 font.pointSize: 12
                 //checkable: false
                 //flat: true
                 height: 20
             }
-            Label {
+            ComboBox {
                 id: languageIndicator
-                text: "Language AC"
+
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                anchors.right: fontSizeLable.left
+                anchors.rightMargin: 70
+                model: ["Language C", "C"]
+
+                height: 20
+                implicitWidth: 50
+                onAccepted: Action {
+                    id: langChangedAction
+                    onTriggered: synHandler.targetLang = languageIndicator.currentText
+                }
+            }
+
+
+            Label {
+                id: fontSizeLable
+                text: "Font Size: "
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                anchors.right: fontSizer.left
+                anchors.rightMargin: 10
+
                 font.pointSize: 12
-                //checkable: false
-                //flat: true
                 height: 20
             }
 
-            Label {
+            SpinBox {
                 id: fontSizer
-                text: "SIZE VARIABLE"
-                font.pointSize: 12
-                //checkable: false
-                //flat: true
-                height: 20
+                anchors.right: parent.right
+                anchors.rightMargin: 10
+
+                Layout.fillHeight: true
+                transformOrigin: Item.Center
+                Layout.maximumWidth: 100
+                Layout.minimumWidth: 30
+                Layout.alignment: Qt.AlignVCenter
+                implicitWidth: 100
+                implicitHeight: 10
+                value: 14
+                stepSize: 1
+                maximumValue: 30
+                minimumValue: 6
+                style:  SpinBoxStyle {
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 10
+                        border.color: "gray"
+                        radius: 2
+                    }
+                }
             }
         }
     }

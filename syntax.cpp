@@ -34,25 +34,18 @@ void customizedSyntaxHighligher::highlightBlock(const QString &text) {
 
 customizedSyntaxHighligher::customizedSyntaxHighligher(QTextDocument *parent, codingLanguage flag) : QSyntaxHighlighter(parent) {
     langFlag = flag;
-    latch = 0;
 
     QFile langFile(getLangFileInfo(langFlag));
 
     if (!langFile.exists()) {
-        qDebug("Downloading file.");
-        QEventLoop loop;
-        langFileFetcher * tempFetcher = new langFileFetcher(langFlag);
-        qDebug("Fetcher constructed");
-        //loop.connect(tempFetcher, SIGNAL(downloaded()), SLOT(quit()));
-        qDebug("Singal connected");
-        //loop.exec();
-        // waiting mechanism to implement.
+        qWarning("Language file not found.");
+        exit(300);
     }
 
     qDebug("with local language file.");
     if (!langFile.open(QIODevice::ReadOnly)) {
         qWarning("Couldn't open language file.");
-
+        exit(301);
     }
 
     HighlightingRule rule;
@@ -83,17 +76,3 @@ customizedSyntaxHighligher::customizedSyntaxHighligher(QTextDocument *parent, co
     commentEndExpression = QRegExp("[)]");
 }
 
-void customizedSyntaxHighligher::constructorRest() {
-    latch = 1;
-}
-
-//void syntaxHilighterHandler::newTabCreated(const char * objectName) {
-//    QQuickTextDocument * activeCodeText = childObject<QQuickTextDocument*>(engine, objectName, "textDocument");
-//    Q_ASSERT(activeCodeText != 0);
-//    highlighters[counter++] = new customizedSyntaxHighligher(activeCodeText->textDocument());
-//}
-
-//void syntaxHilighterHandler::newTabDestroyed(const char * objectName) {
-//    // delete the parser
-//    return;
-//}

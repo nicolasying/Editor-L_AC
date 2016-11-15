@@ -24,7 +24,7 @@ void langFileFetcher::fileDownloaded(QNetworkReply* pReply) {
     m_DownloadedData = pReply->readAll();
     saveFile();
     qDebug("saved.");
-    emit downloaded();
+    emit downloaded(flag);
 }
 
 QByteArray langFileFetcher::downloadedData() const {

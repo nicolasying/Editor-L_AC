@@ -15,7 +15,8 @@ SOURCES += main.cpp \
     syntax.cpp \
     documenthandler.cpp \
     universalfunc.cpp \
-    networkgetlangfile.cpp
+    networkgetlangfile.cpp \
+    highlighterhandler.cpp
 
 HEADERS  += \
     syntax.h \
@@ -34,7 +35,13 @@ DISTFILES += \
     icons/welcome.svg \
     FunctionalityButton.qml \
     CodeTab.qml \
-    lac_language.json
+    lac_language.json \
+    Nicolas.icns \
+    Info.plist
+
+ICON = Nicolas.icns
+
+QMAKE_INFO_PLIST += Info.plist
 
 RESOURCES += \
     qtquickstyle.qrc
