@@ -69,6 +69,19 @@ ApplicationWindow {
         onTriggered: activeFocusItem.paste()
     }
 
+    Action {
+        id: enlargeCode
+        shortcut: "Ctrl+="
+        onTriggered: fontSizer.value = fontSizer.value + 1
+    }
+
+
+    Action {
+        id: ensmallCode
+        shortcut: "Ctrl+-"
+        onTriggered: fontSizer.value = fontSizer.value - 1
+    }
+
     menuBar: MenuBar {
         Menu {
             title: "File"
@@ -271,7 +284,7 @@ ApplicationWindow {
             contentWidth: codeText.paintedWidth
             contentHeight: codeText.paintedHeight
             clip: true
-            flickableDirection: Flickable.VerticalFlick
+            //flickableDirection: Flickable.VerticalFlick
 
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
@@ -297,17 +310,23 @@ ApplicationWindow {
                 id: textEnum
                 visible: true
                 width: 40
-
+                text: popup()
+                horizontalAlignment: Text.AlignRight
                 font.pointSize: fontSizer.value
                 font.family: "Menlo"
+                font.weight: Font.Thin
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 0
                 anchors.left: parent.left
                 anchors.leftMargin: 0
                 anchors.top: parent.top
                 anchors.topMargin: 0
+                color: "#90A4AE"
+
                 function popup (){
-                    for (var i = 0; i <= codeText.lineCount; i++) textEnum.text += i;
+                    var text = ""
+                    for (var i = 1; i <= codeText.lineCount; i++) text += (i + "\n")
+                    return text
                 }
             }
 
@@ -318,7 +337,7 @@ ApplicationWindow {
                 anchors.top: parent.top
                 anchors.topMargin: 0
                 anchors.left: textEnum.right
-                anchors.leftMargin: 0
+                anchors.leftMargin: 10
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 0
 
