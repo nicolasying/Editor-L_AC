@@ -8,13 +8,14 @@ syntaxHilighterHandler::syntaxHilighterHandler() : QObject(nullptr) {
 }
 
 syntaxHilighterHandler::~syntaxHilighterHandler() {
-    for (; counter>=0; counter--) {
-        if (highlighters[counter] != NULL)
-            delete highlighters[counter];
-    }
+
+    if (counter != 0 || highlighters[0] != NULL)
+        delete highlighters[counter];
+
 }
 
 void syntaxHilighterHandler::langFileReady (codingLanguage langFlag) {
+    if (tempFetcher != NULL) delete tempFetcher;
     QQuickTextDocument * activeCodeText = childObject<QQuickTextDocument*>((*engine_p), "activeCodeText", "textDocument");
     Q_ASSERT(activeCodeText != 0);
     counter++;
@@ -53,7 +54,7 @@ void syntaxHilighterHandler::constructHighlighter(codingLanguage langFlag) {
     if (!langFile.exists()) {
         qDebug("Downloading file.");
         //QEventLoop loop;
-        langFileFetcher * tempFetcher = new langFileFetcher(langFlag);
+        tempFetcher = new langFileFetcher(langFlag);
         qDebug("Fetcher constructed");
         connect(tempFetcher, SIGNAL(downloaded(codingLanguage)), this, SLOT(langFileReady(codingLanguage)));
         qDebug("Singal connected");

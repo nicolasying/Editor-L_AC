@@ -40,6 +40,7 @@ void langFileFetcher::saveFile() {
         destFile->close();
     }
     else qWarning("File not avaible.");
+    //this->~langFileFetcher();
     return;
 }
 

@@ -255,6 +255,14 @@ ApplicationWindow {
                 buttonAction: noAction
             }
         }
+        Rectangle {
+                  id: scrollbar
+                  anchors.right: flick.right
+                  y: flick.visibleArea.yPosition * flick.height
+                  width: 10
+                  height: flick.visibleArea.heightRatio * flick.height
+                  color: "#546E7A"
+              }
         Flickable {
             id: flick
 
@@ -263,6 +271,7 @@ ApplicationWindow {
             contentWidth: codeText.paintedWidth
             contentHeight: codeText.paintedHeight
             clip: true
+            flickableDirection: Flickable.VerticalFlick
 
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0

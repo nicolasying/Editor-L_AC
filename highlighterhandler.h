@@ -17,6 +17,7 @@ private:
     int counter;
 //    QQuickItem *m_target;
 //    QObject * whatever;
+    langFileFetcher * tempFetcher;
     QString m_targetLang;
     QString targetLang() const {return m_targetLang;}
 public:
