@@ -363,7 +363,7 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 anchors.right: fontSizeLable.left
                 anchors.rightMargin: 70
-                model: ["Language C", "C"]
+                model: ["Language AC", "C"]
 
                 height: 20
                 implicitWidth: 100
