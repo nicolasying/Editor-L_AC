@@ -36,12 +36,16 @@ DISTFILES += \
     FunctionalityButton.qml \
     CodeTab.qml \
     lac_language.json \
-    Nicolas.icns \
     Info.plist \
     WelcomeDialog.qml \
-    welcomePic.png
+    welcomePic.png \
+    Editor_L-AC.ico \
+    Editor_L-AC.icns \
+    ico.rc
 
-ICON = Nicolas.icns
+RC_FILE = ico.rc
+
+ICON = Editor_L-AC.icns
 
 QMAKE_INFO_PLIST += Info.plist
 

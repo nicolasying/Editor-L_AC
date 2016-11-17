@@ -12,5 +12,6 @@
         <file>lac_language.json</file>
         <file>WelcomeDialog.qml</file>
         <file>welcomePic.png</file>
+        <file>Menlo-Regular.ttf</file>
     </qresource>
 </RCC>

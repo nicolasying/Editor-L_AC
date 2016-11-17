@@ -16,6 +16,12 @@ ApplicationWindow {
     height: 768
     title: tabDocument.documentTitle + qsTr(" - Editor for Language AC")
 
+    FontLoader {
+        id: customizedFont
+        name: "Menlo"
+        source: "qrc:/Menlo-Regular.ttf"
+    }
+
     DocumentHandler {
         id: tabDocument
         target: codeText
@@ -313,7 +319,7 @@ ApplicationWindow {
                 text: popup()
                 horizontalAlignment: Text.AlignRight
                 font.pointSize: fontSizer.value
-                font.family: "Menlo"
+                font.family: customizedFont.name
                 font.weight: Font.Thin
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 0
@@ -353,7 +359,7 @@ ApplicationWindow {
 
 
                 font.pointSize: fontSizer.value
-                font.family: "Menlo"
+                font.family: customizedFont.name
                 selectByKeyboard: true
                 selectByMouse: true
 
