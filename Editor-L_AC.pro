@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui quick qml network
+QT       += core gui quick qml network svg
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -51,5 +51,3 @@ QMAKE_INFO_PLIST += Info.plist
 
 RESOURCES += \
     qtquickstyle.qrc
-
-QML_IMPORT_PATH =
