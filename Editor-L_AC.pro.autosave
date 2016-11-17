@@ -52,4 +52,4 @@ QMAKE_INFO_PLIST += Info.plist
 RESOURCES += \
     qtquickstyle.qrc
 
-QML_IMPORT_PATH =
+QML_IMPORT_PATH = 

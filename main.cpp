@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QGuiApplication>
 #include <QQuickTextDocument>
+#include <QtQml>
 #include "syntax.h"
 #include "documenthandler.h"
 #include "highlighterhandler.h"
